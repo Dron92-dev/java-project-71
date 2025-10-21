@@ -69,8 +69,8 @@ public class App implements Callable<Integer> {
         Map<String, Object> data1 = readFile(filePath1);
         Map<String, Object> data2 = readFile(filePath2);
 
-        System.out.println("File 1 data: " + data1);
-        System.out.println("File 2 data: " + data2);
+        String result = Differ.generate(data1, data2);
+        System.out.println(result);
         return 0;
     }
 

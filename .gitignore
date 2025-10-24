@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store.idea/
+.DS_Store
+*.DS_Store
+**/.DS_Store
+.idea/

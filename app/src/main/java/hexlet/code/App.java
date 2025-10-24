@@ -10,20 +10,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Основной класс приложения для сравнения файлов.
+ */
 @Command(
         name = "gendiff",
         description = "Compares two configuration files and shows a difference.",
         mixinStandardHelpOptions = true
 )
 
-
 public class App implements Callable<Integer> {
 
+    /**
+     *Путь к первому файлу.
+     */
     @Parameters(
             index = "0",
             description = "path to first file",
@@ -31,6 +35,9 @@ public class App implements Callable<Integer> {
     )
     private String filePath1;
 
+    /**
+     *Путь ко второму файлу.
+     */
     @Parameters(
             index = "1",
             description = "path to second file",
@@ -38,6 +45,9 @@ public class App implements Callable<Integer> {
     )
     private String filePath2;
 
+    /**
+     * Формат вывода результатов.
+     */
     @Option(
             names = {"-f", "--format"},
             description = "output format [default: stylish]",
@@ -46,6 +56,9 @@ public class App implements Callable<Integer> {
     )
     private String format;
 
+    /**
+     * Опция запроса справки.
+     */
     @Option(
             names = {"-h", "--help"},
             usageHelp = true,
@@ -53,6 +66,9 @@ public class App implements Callable<Integer> {
     )
     private boolean helpRequested = false;
 
+    /**
+     * Опция запроса версии.
+     */
     @Option(
             names = {"-V", "--version"},
             versionHelp = true,
@@ -60,11 +76,22 @@ public class App implements Callable<Integer> {
     )
     private boolean versionRequested = false;
 
-    public static void main(String[] args) {
+    /**
+     * Основной метод приложения.
+     *
+     * @param args аргументы командной строки
+     */
+    public static void main(final String[] args) {
         int exitCode = new CommandLine(new App()).execute(args);
         System.exit(exitCode);
     }
 
+    /**
+     * Основной метод выполнения сравнения файлов.
+     *
+     * @return код возврата приложения
+     * @throws Exception в случае ошибок чтения файлов или парсинга
+     */
     public Integer call() throws Exception {
         Map<String, Object> data1 = readFile(filePath1);
         Map<String, Object> data2 = readFile(filePath2);
@@ -74,7 +101,14 @@ public class App implements Callable<Integer> {
         return 0;
     }
 
-    private Map<String, Object> readFile(String filePath) throws Exception {
+    /**
+     * Метод читает и парсит файл в Map.
+     *
+     * @param filePath путь к файлу
+     * @return распарсенные данные из файла
+     * @throws Exception в случае ошибок чтения или парсинга
+     */
+    private Map<String, Object> readFile(final String filePath) throws Exception {
         Path path = Paths.get(filePath).toAbsolutePath().normalize();
         String content = Files.readString(path);
 

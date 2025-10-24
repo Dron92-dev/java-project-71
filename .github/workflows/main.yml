@@ -36,3 +36,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+	with:
+    	  args: |
+      	    -Dsonar.projectKey=Dron92-dev_java-project-71
+            -Dsonar.organization=dron92-dev
+            -Dsonar.projectBaseDir=app

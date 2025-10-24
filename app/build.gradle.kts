@@ -4,7 +4,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.53.0"
     id("checkstyle")
     id("jacoco")
-    id("org.sonarqube") version "4.4.1.3373"
+    id("org.sonarqube") version "7.0.0.6105"
 }
 
 group = "hexlet.code"

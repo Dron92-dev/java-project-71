@@ -59,6 +59,7 @@ sonar {
         property("sonar.projectKey", "Dron92-dev_java-project-71")
         property("sonar.organization", "dron92-dev")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 

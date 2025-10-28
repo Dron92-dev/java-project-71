@@ -1,6 +1,6 @@
 # Differ
 
-![Java CI](https://github.com/Dron92-dev/java-project-71/actions/workflows/main.yml/badge.svg)
+![Java CI](https://github.com/Dron92-dev/java-project-71/actions/workflows/Java%20CI/badge.svg)
 [![SonarQube analysis](https://github.com/Dron92-dev/java-project-71/actions/workflows/sonarqube.yml/badge.svg)](https://github.com/Dron92-dev/java-project-71/actions/workflows/sonarqube.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dron92-dev_java-project-71&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Dron92-dev_java-project-71)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Dron92-dev_java-project-71&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Dron92-dev_java-project-71)

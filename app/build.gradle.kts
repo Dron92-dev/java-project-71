@@ -1,10 +1,13 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
-    id("java")
-    id("application")
-    id("com.github.ben-manes.versions") version "0.53.0"
-    id("checkstyle")
-    id("jacoco")
-    id("org.sonarqube") version "7.0.0.6105"
+    java
+    application
+    checkstyle
+    jacoco
+    alias (libs.plugins.versions)
+    alias(libs.plugins.sonarqube)
 }
 
 group = "hexlet.code"
@@ -16,10 +19,12 @@ repositories {
 }
 
 dependencies {
-    implementation("info.picocli:picocli:4.7.7")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation(libs.picocli)
+    implementation(libs.jackson.databind)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation("org.assertj:assertj-core:3.24.2")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {
@@ -27,29 +32,17 @@ application {
 }
 
 checkstyle {
-    toolVersion = "10.12.5"
+    toolVersion = libs.versions.checkstyle.get()
     configFile = file("config/checkstyle/checkstyle.xml")
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-
-sonar {
-    properties {
-        property("sonar.projectKey", "Dron92-dev_java-project-71")
-        property("sonar.organization", "dron92-dev")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+        events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+        showStandardStreams = true
     }
-}
-
-jacoco {
-    toolVersion = "0.8.11"
-}
-
-tasks.test {
-    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
 
@@ -60,3 +53,16 @@ tasks.jacocoTestReport {
         html.required = true
     }
 }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "Dron92-dev_java-project-71")
+        property("sonar.organization", "dron92-dev")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+

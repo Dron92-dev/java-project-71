@@ -1,0 +1,18 @@
+[plugins]
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-plugin" }
+
+[versions]
+junit = "5.10.0"
+checkstyle = "10.12.5"
+
+versions-plugin = "0.53.0"
+sonarqube-plugin = "4.4.1.3373"
+
+[libraries]
+picocli = "info.picocli:picocli:4.7.5"
+jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }

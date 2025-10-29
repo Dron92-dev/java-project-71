@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
       
       - name: Make gradlew executable
@@ -25,9 +25,20 @@ jobs:
           ./gradlew checkstyleMain
           ./gradlew checkstyleTest
       
-      - name: Execute Gradle build with Sonar
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Build and generate reports
         run: |
           cd app
-          ./gradlew build jacocoTestReport checkstyleMain checkstyleTest sonar --info
+          ./gradlew build jacocoTestReport checkstyleMain checkstyleTest
+      
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v6.0.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app
+          args: |
+            -Dsonar.projectKey=Dron92-dev_java-project-71
+            -Dsonar.organization=dron92-dev
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+            -Dsonar.java.checkstyle.reportPaths=build/reports/checkstyle/main.xml

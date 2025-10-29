@@ -7,7 +7,7 @@ junit = "5.10.0"
 checkstyle = "10.12.5"
 
 versions-plugin = "0.53.0"
-sonarqube-plugin = "4.4.1.3373"
+sonarqube-plugin = "6.3.1.5724"
 
 [libraries]
 picocli = "info.picocli:picocli:4.7.5"

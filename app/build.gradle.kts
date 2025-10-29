@@ -2,38 +2,30 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    java
+    // id("com.github.ben-manes.versions") version "0.52.0"
+    // id("com.diffplug.spotless") version "7.2.1"
+
     application
-    checkstyle
-    jacoco
-    alias (libs.plugins.versions)
+    // jacoco
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.shadow)
     alias(libs.plugins.sonarqube)
 }
 
-group = "hexlet.code"
+group = "io.hexlet"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
+application { mainClass.set("io.hexlet.Application") }
+
+repositories { mavenCentral() }
 
 dependencies {
-    implementation(libs.picocli)
-    implementation(libs.jackson.databind)
+    implementation(libs.commons.lang3)
+    implementation(libs.commons.collections4)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
-    testImplementation("org.assertj:assertj-core:3.24.2")
     testRuntimeOnly(libs.junit.platform.launcher)
-}
-
-application {
-    mainClass.set("hexlet.code.App")
-}
-
-checkstyle {
-    toolVersion = libs.versions.checkstyle.get()
-    configFile = file("config/checkstyle/checkstyle.xml")
 }
 
 tasks.test {
@@ -43,27 +35,34 @@ tasks.test {
         events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
         showStandardStreams = true
     }
-    finalizedBy(tasks.jacocoTestReport)
 }
 
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        xml.required = true
-        html.required = true
+spotless {
+    java {
+        // don't need to set target, it is inferred from java
+
+        // apply a specific flavor of google-java-format
+        // googleJavaFormat('1.8').aosp().reflowLongStrings().skipJavadocFormatting()
+        // fix formatting of type annotations
+        importOrder()
+        googleJavaFormat().aosp()
+        formatAnnotations()
+        removeUnusedImports()
+        leadingTabsToSpaces(4)
+        endWithNewline()
+        // make sure every file has the following copyright header.
+        // optionally, Spotless can set copyright years by digging
+        // through git history (see "license" section below)
+        // licenseHeader '/* (C)$YEAR */'
     }
 }
 
-/*sonar {
-    properties {
-        property("sonar.projectKey", "Dron92-dev_java-project-71")
-        property("sonar.organization", "dron92-dev")
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
-    }
-}*/
+// tasks.jacocoTestReport { reports { xml.required.set(true) } }
 
-jacoco {
-    toolVersion = "0.8.11"
-}
-
+// sonar {
+//     properties {
+//         property("sonar.projectKey", "hexlet-boilerplates_java-package")
+//         property("sonar.organization", "hexlet-boilerplates")
+//         property("sonar.host.url", "https://sonarcloud.io")
+//     }
+// }

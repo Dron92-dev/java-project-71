@@ -15,6 +15,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Make gradlew executable
         run: chmod +x ./app/gradlew
       
@@ -24,9 +27,6 @@ jobs:
           ./gradlew build
           ./gradlew checkstyleMain
           ./gradlew checkstyleTest
-      
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
       
       - name: Build and analyze
         env:

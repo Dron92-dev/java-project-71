@@ -5,28 +5,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Утилитарный класс для сравнения двух карт (Map) и генерации различий.
- */
-
+/** Утилитарный класс для сравнения двух карт (Map) и генерации различий. */
 public final class Differ {
-    /**
-     * Приватный конструктор для утилитарного класса.
-     */
+    /** Приватный конструктор для утилитарного класса. */
     private Differ() {
         throw new UnsupportedOperationException("Утилитарный класс");
     }
 
     /**
-     * Генерирует изменения, которые произошли во второй структуре данных
-     * относительно первой.
+     * Генерирует изменения, которые произошли во второй структуре данных относительно первой.
      *
      * @param data1 первая структура данных
      * @param data2 вторая структура данных
      * @return строковое представление изменений
      */
-    public static String generate(final Map<String, Object> data1,
-                                  final Map<String, Object> data2) {
+    public static String generate(
+            final Map<String, Object> data1, final Map<String, Object> data2) {
         StringBuilder result = new StringBuilder();
         result.append("{\n");
 
@@ -46,34 +40,14 @@ public final class Differ {
             Object value2 = data2.get(key);
 
             if (inFirst && !inSecond) {
-                result.append("    - ")
-                        .append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n");
+                result.append("    - ").append(key).append(": ").append(value1).append("\n");
             } else if (!inFirst && inSecond) {
-                result.append("    + ")
-                        .append(key)
-                        .append(": ")
-                        .append(value2)
-                        .append("\n");
+                result.append("    + ").append(key).append(": ").append(value2).append("\n");
             } else if (value1.equals(value2)) {
-                result.append("      ")
-                        .append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n");
+                result.append("      ").append(key).append(": ").append(value1).append("\n");
             } else {
-                result.append("    - ")
-                        .append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n");
-                result.append("    + ")
-                        .append(key)
-                        .append(": ")
-                        .append(value2)
-                        .append("\n");
+                result.append("    - ").append(key).append(": ").append(value1).append("\n");
+                result.append("    + ").append(key).append(": ").append(value2).append("\n");
             }
         }
         result.append("}");

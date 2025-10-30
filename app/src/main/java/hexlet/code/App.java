@@ -1,6 +1,6 @@
 package hexlet.code;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -12,68 +12,41 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-/**
- * Основной класс приложения для сравнения файлов.
- */
+/** Основной класс приложения для сравнения файлов. */
 @Command(
         name = "gendiff",
         description = "Compares two configuration files and shows a difference.",
-        mixinStandardHelpOptions = true
-)
-
+        mixinStandardHelpOptions = true)
 public class App implements Callable<Integer> {
 
-    /**
-     *Путь к первому файлу.
-     */
-    @Parameters(
-            index = "0",
-            description = "path to first file",
-            paramLabel = "filepath1"
-    )
+    /** Путь к первому файлу. */
+    @Parameters(index = "0", description = "path to first file", paramLabel = "filepath1")
     private String filePath1;
 
-    /**
-     *Путь ко второму файлу.
-     */
-    @Parameters(
-            index = "1",
-            description = "path to second file",
-            paramLabel = "filepath2"
-    )
+    /** Путь ко второму файлу. */
+    @Parameters(index = "1", description = "path to second file", paramLabel = "filepath2")
     private String filePath2;
 
-    /**
-     * Формат вывода результатов.
-     */
+    /** Формат вывода результатов. */
     @Option(
             names = {"-f", "--format"},
             description = "output format [default: stylish]",
             paramLabel = "format",
-            defaultValue = "stylish"
-    )
+            defaultValue = "stylish")
     private String format;
 
-    /**
-     * Опция запроса справки.
-     */
+    /** Опция запроса справки. */
     @Option(
             names = {"-h", "--help"},
             usageHelp = true,
-            description = "Show this help message and exit."
-    )
+            description = "Show this help message and exit.")
     private boolean helpRequested = false;
 
-    /**
-     * Опция запроса версии.
-     */
+    /** Опция запроса версии. */
     @Option(
             names = {"-V", "--version"},
             versionHelp = true,
-            description = "Print version information and exit."
-    )
+            description = "Print version information and exit.")
     private boolean versionRequested = false;
 
     /**

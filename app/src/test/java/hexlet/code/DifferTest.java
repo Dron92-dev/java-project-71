@@ -1,9 +1,8 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -11,22 +10,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * Класс для тестирования Differ.
- */
+/** Класс для тестирования Differ. */
 final class DifferTest {
 
-    /**
-     * Ожидаемая стилизация результата работы диффа.
-     */
+    /** Ожидаемая стилизация результата работы диффа. */
     private String expected;
 
-    /**
-     * ObjectMapper для парсинга JSON.
-     */
+    /** ObjectMapper для парсинга JSON. */
     private ObjectMapper objectMapper;
 
     /**
@@ -38,16 +31,17 @@ final class DifferTest {
     void setUp() throws Exception {
         objectMapper = new ObjectMapper();
 
-        expected = String.join("\n",
-                "{",
-                "    - follow: false",
-                "      host: hexlet.io",
-                "    - proxy: 123.234.53.22",
-                "    - timeout: 50",
-                "    + timeout: 20",
-                "    + verbose: true",
-                "}"
-        );
+        expected =
+                String.join(
+                        "\n",
+                        "{",
+                        "    - follow: false",
+                        "      host: hexlet.io",
+                        "    - proxy: 123.234.53.22",
+                        "    - timeout: 50",
+                        "    + timeout: 20",
+                        "    + verbose: true",
+                        "}");
     }
 
     /**
@@ -76,12 +70,8 @@ final class DifferTest {
         Map<String, Object> data2 = readJsonFile("fixtures/file3.json");
 
         String result = Differ.generate(data1, data2);
-        final String expectedForSameFiles = String.join("\n",
-                "{",
-                "      host: hexlet.io",
-                "      timeout: 50",
-                "}"
-        );
+        final String expectedForSameFiles =
+                String.join("\n", "{", "      host: hexlet.io", "      timeout: 50", "}");
         assertThat(result).isEqualTo(expectedForSameFiles);
     }
 
@@ -96,13 +86,14 @@ final class DifferTest {
         Map<String, Object> data2 = readJsonFile("fixtures/file2.json");
 
         String result = Differ.generate(data1, data2);
-        final String expectedForEmptyFirst = String.join("\n",
-                "{",
-                "    + host: hexlet.io",
-                "    + timeout: 20",
-                "    + verbose: true",
-                "}"
-        );
+        final String expectedForEmptyFirst =
+                String.join(
+                        "\n",
+                        "{",
+                        "    + host: hexlet.io",
+                        "    + timeout: 20",
+                        "    + verbose: true",
+                        "}");
         assertThat(result).isEqualTo(expectedForEmptyFirst);
     }
 
@@ -117,14 +108,15 @@ final class DifferTest {
         Map<String, Object> data2 = readJsonFile("fixtures/empty.json");
 
         String result = Differ.generate(data1, data2);
-        final String expectedForEmptySecond = String.join("\n",
-                "{",
-                "    - follow: false",
-                "    - host: hexlet.io",
-                "    - proxy: 123.234.53.22",
-                "    - timeout: 50",
-                "}"
-        );
+        final String expectedForEmptySecond =
+                String.join(
+                        "\n",
+                        "{",
+                        "    - follow: false",
+                        "    - host: hexlet.io",
+                        "    - proxy: 123.234.53.22",
+                        "    - timeout: 50",
+                        "}");
         assertThat(result).isEqualTo(expectedForEmptySecond);
     }
 

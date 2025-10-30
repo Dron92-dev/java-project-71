@@ -1,10 +1,8 @@
 [plugins]
-
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
 lombok = { id = "io.freefair.lombok", version.ref = "lombok-plugin" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow-plugin" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-plugin" }
-
-spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
 
 [versions]
 
@@ -12,6 +10,8 @@ spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
 # commons-collections4 = "4.5.0"
 junit-bom = "5.13.4"
 
+checkstyle = "10.12.5"
+versions-plugin = "0.53.0"
 lombok-plugin = "9.0.0-rc2"
 shadow-plugin = "9.1.0"
 sonarqube-plugin = "6.3.1.5724"
@@ -24,6 +24,8 @@ junit = "5.13.4"
 
 
 [libraries]
+picocli = "info.picocli:picocli:4.7.5"
+jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
 
 commons-lang3 = "org.apache.commons:commons-lang3:3.18.0"
 commons-collections4 = "org.apache.commons:commons-collections4:4.5.0"

@@ -2,30 +2,33 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    // id("com.github.ben-manes.versions") version "0.52.0"
-    // id("com.diffplug.spotless") version "7.2.1"
-
+    java
     application
-    // jacoco
-    alias(libs.plugins.spotless)
-    alias(libs.plugins.lombok)
-    alias(libs.plugins.shadow)
+    checkstyle
+    jacoco
+    alias(libs.plugins.versions)
     alias(libs.plugins.sonarqube)
 }
 
-group = "io.hexlet"
+group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 
-application { mainClass.set("io.hexlet.Application") }
+application { mainClass.set("hexlet.code.App") }
 
 repositories { mavenCentral() }
 
 dependencies {
-    implementation(libs.commons.lang3)
-    implementation(libs.commons.collections4)
+    implementation(libs.picocli)
+    implementation(libs.jackson.databind)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
+    testImplementation("org.assertj:assertj-core:3.24.2")
     testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+configure<CheckstyleExtension> {
+    toolVersion = libs.versions.checkstyle.get()
+    configFile = file("config/checkstyle/checkstyle.xml")
 }
 
 tasks.test {
@@ -35,34 +38,26 @@ tasks.test {
         events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
         showStandardStreams = true
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 
-spotless {
-    java {
-        // don't need to set target, it is inferred from java
-
-        // apply a specific flavor of google-java-format
-        // googleJavaFormat('1.8').aosp().reflowLongStrings().skipJavadocFormatting()
-        // fix formatting of type annotations
-        importOrder()
-        googleJavaFormat().aosp()
-        formatAnnotations()
-        removeUnusedImports()
-        leadingTabsToSpaces(4)
-        endWithNewline()
-        // make sure every file has the following copyright header.
-        // optionally, Spotless can set copyright years by digging
-        // through git history (see "license" section below)
-        // licenseHeader '/* (C)$YEAR */'
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        html.required = true
     }
 }
 
-// tasks.jacocoTestReport { reports { xml.required.set(true) } }
+jacoco {
+    toolVersion = "0.8.11"
+}
 
-// sonar {
-//     properties {
-//         property("sonar.projectKey", "hexlet-boilerplates_java-package")
-//         property("sonar.organization", "hexlet-boilerplates")
-//         property("sonar.host.url", "https://sonarcloud.io")
-//     }
-// }
+sonar {
+    properties {
+        property("sonar.projectKey", "Dron92-dev_java-project-71")
+        property("sonar.organization", "dron92-dev")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+    }
+}

@@ -13,6 +13,12 @@
 ## Hexlet tests and linter status:
 [![Actions Status](https://github.com/Dron92-dev/java-project-71/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Dron92-dev/java-project-71/actions)
 
-## Demo
+## Пример работы help и сравнения JSON файлов
 
 [![asciicast](https://asciinema.org/a/mi0SJzPpUBZuYW2Yu1uFSUYIL.svg)](https://asciinema.org/a/mi0SJzPpUBZuYW2Yu1uFSUYIL)
+
+## Пример работы с YAML файлами
+
+[![asciicast](https://asciinema.org/a/SdKtG02XKkJRsupj1lVOmbYLG.svg)](https://asciinema.org/a/SdKtG02XKkJRsupj1lVOmbYLG)
+
+

@@ -2,7 +2,9 @@ package hexlet.code;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -10,17 +12,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/** Класс для тестирования Differ. */
+/**
+ * Класс для тестирования Differ.
+ */
 final class DifferTest {
 
-    /** Ожидаемая стилизация результата работы диффа. */
+    /**
+     * Ожидаемая стилизация результата работы диффа.
+     */
     private String expected;
 
-    /** ObjectMapper для парсинга JSON. */
-    private ObjectMapper objectMapper;
+    /**
+     * ObjectMapper для парсинга JSON.
+     */
+    private ObjectMapper jsonMapper;
+
+    /**
+     * ObjectMapper для парсинга YAML.
+     */
+    private ObjectMapper yamlMapper;
 
     /**
      * Подготовка данных перед каждым тестом.
@@ -29,7 +44,8 @@ final class DifferTest {
      */
     @BeforeEach
     void setUp() throws Exception {
-        objectMapper = new ObjectMapper();
+        jsonMapper = new ObjectMapper(new JsonFactory());
+        yamlMapper = new ObjectMapper(new YAMLFactory());
 
         expected =
                 String.join(
@@ -45,12 +61,12 @@ final class DifferTest {
     }
 
     /**
-     * Тест для сравнения разных файлов.
+     * Тест для сравнения разных файлов JSON.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithDifferentFiles() throws Exception {
+    void testGenerateWithDifferentJsonFiles() throws Exception {
         Map<String, Object> data1 = readJsonFile("fixtures/file1.json");
         Map<String, Object> data2 = readJsonFile("fixtures/file2.json");
 
@@ -60,28 +76,33 @@ final class DifferTest {
     }
 
     /**
-     * Тест сравнения одинаковых файлов.
+     * Тест сравнения одинаковых файлов JSON.
      *
      * @throws Exception если тест не удался
      */
+
     @Test
-    void testGenerateWithSameFiles() throws Exception {
+    void testGenerateWithSameJsonFiles() throws Exception {
         Map<String, Object> data1 = readJsonFile("fixtures/file3.json");
         Map<String, Object> data2 = readJsonFile("fixtures/file3.json");
 
         String result = Differ.generate(data1, data2);
         final String expectedForSameFiles =
-                String.join("\n", "{", "      host: hexlet.io", "      timeout: 50", "}");
+                String.join("\n",
+                        "{",
+                        "      host: hexlet.io",
+                        "      timeout: 50",
+                        "}");
         assertThat(result).isEqualTo(expectedForSameFiles);
     }
 
     /**
-     * Тест сравнения с пустым первым файлом.
+     * Тест сравнения с пустым первым файлом JSON.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithEmptyFirstFile() throws Exception {
+    void testGenerateWithEmptyFirstJsonFile() throws Exception {
         Map<String, Object> data1 = readJsonFile("fixtures/empty.json");
         Map<String, Object> data2 = readJsonFile("fixtures/file2.json");
 
@@ -98,12 +119,12 @@ final class DifferTest {
     }
 
     /**
-     * Тест сравнения с пустым вторым файлом.
+     * Тест сравнения с пустым вторым файлом JSON.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithEmptySecondFile() throws Exception {
+    void testGenerateWithEmptySecondJsonFile() throws Exception {
         Map<String, Object> data1 = readJsonFile("fixtures/file1.json");
         Map<String, Object> data2 = readJsonFile("fixtures/empty.json");
 
@@ -121,6 +142,82 @@ final class DifferTest {
     }
 
     /**
+     * Тест для сравнения разных YAML файлов.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithDifferentYamlFiles() throws Exception {
+        Map<String, Object> data1 = readYamlFile("fixtures/file1.yml");
+        Map<String, Object> data2 = readYamlFile("fixtures/file2.yml");
+
+        String result = Differ.generate(data1, data2);
+
+        assertThat(result).isEqualTo(expected);
+    }
+
+    /**
+     * Тест для сравнения одинаковых YAML файлов.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithSameYamlFiles() throws Exception {
+        Map<String, Object> data1 = readYamlFile("fixtures/file3.yml");
+        Map<String, Object> data2 = readYamlFile("fixtures/file3.yml");
+
+        String result = Differ.generate(data1, data2);
+        final String expectedForSameFiles = String.join("\n",
+                "{",
+                "      host: hexlet.io",
+                "      timeout: 50",
+                "}");
+        assertThat(result).isEqualTo(expectedForSameFiles);
+    }
+
+    /**
+     * Тест для сравнения с пустым первым файлом YAML.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithEmptyFirstYamlFile() throws Exception {
+        Map<String, Object> data1 = readYamlFile("fixtures/empty.yml");
+        Map<String, Object> data2 = readYamlFile("fixtures/file2.yml");
+
+        String result = Differ.generate(data1, data2);
+        final String expectedForEmptyFirst = String.join("\n",
+                "{",
+                "    + host: hexlet.io",
+                "    + timeout: 20",
+                "    + verbose: true",
+                "}");
+        assertThat(result).isEqualTo(expectedForEmptyFirst);
+    }
+
+    /**
+     * Тест для сравнения с пустым вторым файлом YAML.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithEmptySecondYamlFile() throws Exception {
+        Map<String, Object> data1 = readYamlFile("fixtures/file1.yml");
+        Map<String, Object> data2 = readYamlFile("fixtures/empty.yml");
+
+        String result = Differ.generate(data1, data2);
+        final String expectedForEmptySecond = String.join("\n",
+                "{",
+                "    - follow: false",
+                "    - host: hexlet.io",
+                "    - proxy: 123.234.53.22",
+                "    - timeout: 50",
+                "}");
+        assertThat(result).isEqualTo(expectedForEmptySecond);
+    }
+
+
+    /**
      * Чтение JSON файла и преобразование в Map.
      *
      * @param resourceName имя ресурса (файла)
@@ -136,6 +233,18 @@ final class DifferTest {
         Path path = Paths.get("src/test/resources/" + resourceName);
         String jsonContent = Files.readString(path);
 
-        return objectMapper.readValue(jsonContent, Map.class);
+        return jsonMapper.readValue(jsonContent, Map.class);
+    }
+
+    private Map<String, Object> readYamlFile(final String resourceName) throws IOException {
+        URL fileUrl = getClass().getClassLoader().getResource(resourceName);
+        if (fileUrl == null) {
+            throw new FileNotFoundException("Файл не нвйден: " + resourceName);
+        }
+
+        Path path = Paths.get("src/test/resources/" + resourceName);
+        String yamlContent = Files.readString(path);
+
+        return yamlMapper.readValue(yamlContent, Map.class);
     }
 }

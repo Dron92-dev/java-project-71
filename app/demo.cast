@@ -1,0 +1,12 @@
+{"version":3,"term":{"cols":177,"rows":20,"type":"xterm-256color"},"timestamp":1762029025,"env":{"SHELL":"/bin/zsh"}}
+[0.018922, "o", "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                \r \r"]
+[0.000023, "o", "\r\u001b[0m\u001b[27m\u001b[24m\u001b[Jdronkrasava@MacBook-Pro-Andrej app % \u001b[K\u001b[?2004h"]
+[2.487003, "o", "\u001b[7m./build/install/app/bin/app file1.yml file2.yml \u001b[27m"]
+[0.730697, "o", "\u001b[48D\u001b[27m.\u001b[27m/\u001b[27mb\u001b[27mu\u001b[27mi\u001b[27ml\u001b[27md\u001b[27m/\u001b[27mi\u001b[27mn\u001b[27ms\u001b[27mt\u001b[27ma\u001b[27ml\u001b[27ml\u001b[27m/\u001b[27ma\u001b[27mp\u001b[27mp\u001b[27m/\u001b[27mb\u001b[27mi\u001b[27mn\u001b[27m/\u001b[27ma\u001b[27mp\u001b[27mp\u001b[27m \u001b[27mf\u001b[27mi\u001b[27ml\u001b[27me\u001b[27m1\u001b[27m.\u001b[27my\u001b[27mm\u001b[27ml\u001b[27m \u001b[27mf\u001b[27mi\u001b[27ml\u001b[27me\u001b[27m2\u001b[27m.\u001b[27my\u001b[27mm\u001b[27ml\u001b[27m "]
+[2.269153, "o", "\u001b[?2004l\r\r\n"]
+[0.19121, "o", "{\r\n    - follow: false\r\n      host: hexlet.io\r\n    - proxy: 123.234.53.22\r\n    - timeout: 50\r\n    + timeout: 20\r\n    + verbose: true\r\n}\r\n"]
+[0.004288, "o", "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                                                                                                \r \r"]
+[0.000054, "o", "\r\u001b[0m\u001b[27m\u001b[24m\u001b[Jdronkrasava@MacBook-Pro-Andrej app % \u001b[K"]
+[0.00001, "o", "\u001b[?2004h"]
+[4.943354, "o", "\u001b[?2004l\r\r\n"]
+[0.005518, "x", "0"]

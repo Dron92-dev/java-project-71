@@ -66,11 +66,8 @@ public class App implements Callable<Integer> {
      * @throws Exception в случае ошибок чтения файлов или парсинга
      */
     public Integer call() throws Exception {
-        Map<String, Object> data1 = readFile(filePath1);
-        Map<String, Object> data2 = readFile(filePath2);
-
-        String result = Differ.generate(data1, data2);
-        System.out.println(result);
+        String diff = Differ.generate(filePath1, filePath2);
+        System.out.println(diff);
         return 0;
     }
 

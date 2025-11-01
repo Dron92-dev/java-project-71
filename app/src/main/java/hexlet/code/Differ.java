@@ -5,18 +5,37 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/** Утилитарный класс для сравнения двух карт (Map) и генерации различий. */
+/**
+ * Утилитарный класс для сравнения двух карт (Map) и генерации различий.
+ */
 public final class Differ {
-    /** Приватный конструктор для утилитарного класса. */
+    /**
+     * Приватный конструктор для утилитарного класса.
+     */
     private Differ() {
         throw new UnsupportedOperationException("Утилитарный класс");
     }
 
     /**
-     * Генерирует изменения, которые произошли во второй структуре данных относительно первой.
+     * Генерирует разницу между двумя файлами.
      *
-     * @param data1 первая структура данных
-     * @param data2 вторая структура данных
+     * @param filePath1 путь к первому файлу
+     * @param filePath2 путь ко второму файлу
+     * @return строковое представление изменений
+     * @throws Exception если чтение или парсинг звершились ошибкой
+     */
+    public static String generate(final String filePath1, final String filePath2) throws Exception {
+        Map<String, Object> data1 = Parser.parse(filePath1);
+        Map<String, Object> data2 = Parser.parse(filePath2);
+
+        return generate(data1, data2);
+    }
+
+    /**
+     * Генерирует изменения, которые произошли между двумя Map.
+     *
+     * @param data1 первая Map
+     * @param data2 вторая Map
      * @return строковое представление изменений
      */
     public static String generate(

@@ -20,6 +20,7 @@ repositories { mavenCentral() }
 dependencies {
     implementation(libs.picocli)
     implementation(libs.jackson.databind)
+    implementation(libs.jackson.dataformat.yaml)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testImplementation("org.assertj:assertj-core:3.24.2")

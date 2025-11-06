@@ -21,4 +21,8 @@
 
 [![asciicast](https://asciinema.org/a/SdKtG02XKkJRsupj1lVOmbYLG.svg)](https://asciinema.org/a/SdKtG02XKkJRsupj1lVOmbYLG)
 
+## Пример работы с вложенными структурами
+
+[![asciicast](https://asciinema.org/a/yTqMWad91yjrX88vEgXqEYAiB.svg)](https://asciinema.org/a/yTqMWad91yjrX88vEgXqEYAiB)
+
 

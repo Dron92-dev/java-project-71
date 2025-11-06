@@ -1,9 +1,6 @@
 package hexlet.code;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Утилитарный класс для сравнения двух карт (Map) и генерации различий.
@@ -28,48 +25,55 @@ public final class Differ {
         Map<String, Object> data1 = Parser.parse(filePath1);
         Map<String, Object> data2 = Parser.parse(filePath2);
 
-        return generate(data1, data2);
+        List<Node> diff = buildDiff(data1, data2);
+        return Formatter.stylish(diff);
     }
 
     /**
      * Генерирует изменения, которые произошли между двумя Map.
      *
-     * @param data1 первая Map
-     * @param data2 вторая Map
-     * @return строковое представление изменений
+     * @param map1 первая Map
+     * @param map2 вторая Map
+     * @return список узлов показывающих различия
      */
-    public static String generate(
-            final Map<String, Object> data1, final Map<String, Object> data2) {
-        StringBuilder result = new StringBuilder();
-        result.append("{\n");
+    public static List<Node> buildDiff(
+            final Map<String, Object> map1, final Map<String, Object> map2) {
+        List<Node> diff = new ArrayList<>();
+        Set<String> allKeys = new TreeSet<>();
+        allKeys.addAll(map1.keySet());
+        allKeys.addAll(map2.keySet());
 
-        Set<String> allKeys = new HashSet<>();
-        allKeys.addAll(data1.keySet());
-        allKeys.addAll(data2.keySet());
-
-        TreeMap<String, String> sortedKeys = new TreeMap<>();
         for (String key : allKeys) {
-            sortedKeys.put(key, key);
-        }
+            Object value1 = map1.get(key);
+            Object value2 = map2.get(key);
 
-        for (String key : sortedKeys.keySet()) {
-            boolean inFirst = data1.containsKey(key);
-            boolean inSecond = data2.containsKey(key);
-            Object value1 = data1.get(key);
-            Object value2 = data2.get(key);
-
-            if (inFirst && !inSecond) {
-                result.append("    - ").append(key).append(": ").append(value1).append("\n");
-            } else if (!inFirst && inSecond) {
-                result.append("    + ").append(key).append(": ").append(value2).append("\n");
-            } else if (value1.equals(value2)) {
-                result.append("      ").append(key).append(": ").append(value1).append("\n");
+            if (!map1.containsKey(key)) {
+                diff.add(new Node(key, null, value2, "added"));
+            } else if (!map2.containsKey(key)) {
+                diff.add(new Node(key, value1, null, "removed"));
+            } else if (isEqual(value1, value2)) {
+                diff.add(new Node(key, value1, value2, "unchanged"));
             } else {
-                result.append("    - ").append(key).append(": ").append(value1).append("\n");
-                result.append("    + ").append(key).append(": ").append(value2).append("\n");
+                diff.add(new Node(key, value1, value2, "changed"));
             }
         }
-        result.append("}");
-        return result.toString();
+        return diff;
+    }
+
+    /**
+     * Проверяет равны ли два значения.
+     * Для сложных объектов (arrays, maps), использует toString().
+     *
+     * @param value1 первое значение
+     * @param value2 второе значение
+     * @return true если значения равны
+     */
+    private static boolean isEqual(Object value1, Object value2) {
+        if (value1 == null && value2 == null) {
+            return true;
+        } else if (value1 == null || value2 == null) {
+            return false;
+        }
+        return value1.toString().equals(value2.toString());
     }
 }

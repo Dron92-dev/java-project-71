@@ -71,6 +71,7 @@ public class App implements Callable<Integer> {
         return 0;
     }
 
+
     /**
      * Метод читает и парсит файл в Map.
      *

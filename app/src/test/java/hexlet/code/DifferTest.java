@@ -2,18 +2,10 @@ package hexlet.code;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,226 +17,88 @@ final class DifferTest {
     /**
      * Ожидаемая стилизация результата работы диффа.
      */
-    private String expected;
-
-    /**
-     * ObjectMapper для парсинга JSON.
-     */
-    private ObjectMapper jsonMapper;
-
-    /**
-     * ObjectMapper для парсинга YAML.
-     */
-    private ObjectMapper yamlMapper;
+    private String expectedNestedStylish;
 
     /**
      * Подготовка данных перед каждым тестом.
      *
-     * @throws Exception если настройка не удалась
      */
     @BeforeEach
-    void setUp() throws Exception {
-        jsonMapper = new ObjectMapper(new JsonFactory());
-        yamlMapper = new ObjectMapper(new YAMLFactory());
-
-        expected =
-                String.join(
-                        "\n",
-                        "{",
-                        "    - follow: false",
-                        "      host: hexlet.io",
-                        "    - proxy: 123.234.53.22",
-                        "    - timeout: 50",
-                        "    + timeout: 20",
-                        "    + verbose: true",
-                        "}");
-    }
-
-    /**
-     * Тест для сравнения разных файлов JSON.
-     *
-     * @throws Exception если тест не удался
-     */
-    @Test
-    void testGenerateWithDifferentJsonFiles() throws Exception {
-        Map<String, Object> data1 = readJsonFile("fixtures/file1.json");
-        Map<String, Object> data2 = readJsonFile("fixtures/file2.json");
-
-        String result = Differ.generate(data1, data2);
-
-        assertThat(result).isEqualTo(expected);
-    }
-
-    /**
-     * Тест сравнения одинаковых файлов JSON.
-     *
-     * @throws Exception если тест не удался
-     */
-
-    @Test
-    void testGenerateWithSameJsonFiles() throws Exception {
-        Map<String, Object> data1 = readJsonFile("fixtures/file3.json");
-        Map<String, Object> data2 = readJsonFile("fixtures/file3.json");
-
-        String result = Differ.generate(data1, data2);
-        final String expectedForSameFiles =
-                String.join("\n",
-                        "{",
-                        "      host: hexlet.io",
-                        "      timeout: 50",
-                        "}");
-        assertThat(result).isEqualTo(expectedForSameFiles);
-    }
-
-    /**
-     * Тест сравнения с пустым первым файлом JSON.
-     *
-     * @throws Exception если тест не удался
-     */
-    @Test
-    void testGenerateWithEmptyFirstJsonFile() throws Exception {
-        Map<String, Object> data1 = readJsonFile("fixtures/empty.json");
-        Map<String, Object> data2 = readJsonFile("fixtures/file2.json");
-
-        String result = Differ.generate(data1, data2);
-        final String expectedForEmptyFirst =
-                String.join(
-                        "\n",
-                        "{",
-                        "    + host: hexlet.io",
-                        "    + timeout: 20",
-                        "    + verbose: true",
-                        "}");
-        assertThat(result).isEqualTo(expectedForEmptyFirst);
-    }
-
-    /**
-     * Тест сравнения с пустым вторым файлом JSON.
-     *
-     * @throws Exception если тест не удался
-     */
-    @Test
-    void testGenerateWithEmptySecondJsonFile() throws Exception {
-        Map<String, Object> data1 = readJsonFile("fixtures/file1.json");
-        Map<String, Object> data2 = readJsonFile("fixtures/empty.json");
-
-        String result = Differ.generate(data1, data2);
-        final String expectedForEmptySecond =
-                String.join(
-                        "\n",
-                        "{",
-                        "    - follow: false",
-                        "    - host: hexlet.io",
-                        "    - proxy: 123.234.53.22",
-                        "    - timeout: 50",
-                        "}");
-        assertThat(result).isEqualTo(expectedForEmptySecond);
-    }
-
-    /**
-     * Тест для сравнения разных YAML файлов.
-     *
-     * @throws Exception если тест не удался
-     */
-    @Test
-    void testGenerateWithDifferentYamlFiles() throws Exception {
-        Map<String, Object> data1 = readYamlFile("fixtures/file1.yml");
-        Map<String, Object> data2 = readYamlFile("fixtures/file2.yml");
-
-        String result = Differ.generate(data1, data2);
-
-        assertThat(result).isEqualTo(expected);
-    }
-
-    /**
-     * Тест для сравнения одинаковых YAML файлов.
-     *
-     * @throws Exception если тест не удался
-     */
-    @Test
-    void testGenerateWithSameYamlFiles() throws Exception {
-        Map<String, Object> data1 = readYamlFile("fixtures/file3.yml");
-        Map<String, Object> data2 = readYamlFile("fixtures/file3.yml");
-
-        String result = Differ.generate(data1, data2);
-        final String expectedForSameFiles = String.join("\n",
+    void setUp() {
+        expectedNestedStylish = String.join("\n",
                 "{",
-                "      host: hexlet.io",
-                "      timeout: 50",
-                "}");
-        assertThat(result).isEqualTo(expectedForSameFiles);
+                "    chars1: [a, b, c]",
+                "  - chars2: [d, e, f]",
+                "  + chars2: false",
+                "  - checked: false",
+                "  + checked: true",
+                "  - default: null",
+                "  + default: [value1, value2]",
+                "  - id: 45",
+                "  + id: null",
+                "  - key1: value1",
+                "  + key2: value2",
+                "    numbers1: [1, 2, 3, 4]",
+                "  - numbers2: [2, 3, 4, 5]",
+                "  + numbers2: [22, 33, 44, 55]",
+                "  - numbers3: [3, 4, 5]",
+                "  + numbers4: [4, 5, 6]",
+                "  + obj1: {nestedKey=value, isNested=true}",
+                "  - setting1: Some value",
+                "  + setting1: Another value",
+                "  - setting2: 200",
+                "  + setting2: 300",
+                "  - setting3: true",
+                "  + setting3: none",
+                "}"
+        );
     }
 
     /**
-     * Тест для сравнения с пустым первым файлом YAML.
+     * Тест для сравнения вложенных JSON структур.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithEmptyFirstYamlFile() throws Exception {
-        Map<String, Object> data1 = readYamlFile("fixtures/empty.yml");
-        Map<String, Object> data2 = readYamlFile("fixtures/file2.yml");
+    void testGenerateWithNestedJsonFiles() throws Exception {
+        String filePath1 = getResourcePath("fixtures/nested1.json");
+        String filePath2 = getResourcePath("fixtures/nested2.json");
 
-        String result = Differ.generate(data1, data2);
-        final String expectedForEmptyFirst = String.join("\n",
-                "{",
-                "    + host: hexlet.io",
-                "    + timeout: 20",
-                "    + verbose: true",
-                "}");
-        assertThat(result).isEqualTo(expectedForEmptyFirst);
+        String result = Differ.generate(filePath1, filePath2);
+
+        assertThat(result).isEqualTo(expectedNestedStylish);
     }
 
     /**
-     * Тест для сравнения с пустым вторым файлом YAML.
+     * Тест для сравнения вложенных YAML структур.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithEmptySecondYamlFile() throws Exception {
-        Map<String, Object> data1 = readYamlFile("fixtures/file1.yml");
-        Map<String, Object> data2 = readYamlFile("fixtures/empty.yml");
+    void testGenerateWithNestedYamlFiles() throws Exception {
+        String filePath1 = getResourcePath("fixtures/nested1.yml");
+        String filePath2 = getResourcePath("fixtures/nested2.yml");
 
-        String result = Differ.generate(data1, data2);
-        final String expectedForEmptySecond = String.join("\n",
-                "{",
-                "    - follow: false",
-                "    - host: hexlet.io",
-                "    - proxy: 123.234.53.22",
-                "    - timeout: 50",
-                "}");
-        assertThat(result).isEqualTo(expectedForEmptySecond);
+        String result = Differ.generate(filePath1, filePath2);
+
+        assertThat(result).isEqualTo(expectedNestedStylish);
     }
 
-
     /**
-     * Чтение JSON файла и преобразование в Map.
+     * Получение полного пути к файлу тестовых ресурсов.
      *
      * @param resourceName имя ресурса (файла)
-     * @return распарсенная карта
-     * @throws IOException если чтение не удалось
+     * @return путь к ресурсу
      */
-    private Map<String, Object> readJsonFile(final String resourceName) throws IOException {
-        URL fileUrl = getClass().getClassLoader().getResource(resourceName);
-        if (fileUrl == null) {
-            throw new FileNotFoundException("Файл не найден: " + resourceName);
+    private String getResourcePath(String resourceName) {
+        try {
+            URL recourseUrl = getClass().getClassLoader().getResource(resourceName);
+            if (recourseUrl == null) {
+                throw new FileNotFoundException("Ресурс не найден: " + resourceName);
+            }
+            return Paths.get(recourseUrl.toURI()).toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось получить путь к ресурсу: " + resourceName, e);
         }
-
-        Path path = Paths.get("src/test/resources/" + resourceName);
-        String jsonContent = Files.readString(path);
-
-        return jsonMapper.readValue(jsonContent, Map.class);
-    }
-
-    private Map<String, Object> readYamlFile(final String resourceName) throws IOException {
-        URL fileUrl = getClass().getClassLoader().getResource(resourceName);
-        if (fileUrl == null) {
-            throw new FileNotFoundException("Файл не нвйден: " + resourceName);
-        }
-
-        Path path = Paths.get("src/test/resources/" + resourceName);
-        String yamlContent = Files.readString(path);
-
-        return yamlMapper.readValue(yamlContent, Map.class);
     }
 }

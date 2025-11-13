@@ -21,7 +21,7 @@ public final class PlainFormatter {
      * @param diff список узлов представляющих различия
      * @return отформатированная строка
      */
-    public static String format(List<Node> diff) {
+    public static String format(final List<Node> diff) {
         StringBuilder result = new StringBuilder();
 
         for (Node node : diff) {
@@ -71,7 +71,7 @@ public final class PlainFormatter {
      * @param value значение
      * @return строковый вывод значения
      */
-    private static String formatePlainValue(Object value) {
+    private static String formatePlainValue(final Object value) {
         if (value == null) {
             return null;
         }
@@ -96,7 +96,7 @@ public final class PlainFormatter {
      * @param value значение
      * @return true или false
      */
-    private static boolean isComplexValue(Object value) {
+    private static boolean isComplexValue(final Object value) {
         return value instanceof java.util.List || value instanceof java.util.Map;
     }
 }

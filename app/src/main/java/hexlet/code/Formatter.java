@@ -22,7 +22,7 @@ public final class Formatter {
      * @param format формат желаемого вывода (stylish, plain)
      * @return вывод результата отформатированный в String
      */
-    public static String format(List<Node> diff, final String format) {
+    public static String format(final List<Node> diff, final String format) {
         return switch (format) {
             case "stylish" -> StylishFormatter.format(diff);
             case "plain" -> PlainFormatter.format(diff);

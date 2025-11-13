@@ -24,16 +24,16 @@ public final class Node {
     /**
      * Конструктор для Node.
      *
-     * @param key      ключ
-     * @param oldValue старое значение
-     * @param newValue новое значение
+     * @param keyParam      ключ
+     * @param oldValueParam старое значение
+     * @param newValueParam новое значение
      * @param type     тип изменения
      */
-    public Node(String key, Object oldValue, Object newValue, String type) {
-        this.key = key;
-        this.oldValue = oldValue;
-        this.newValue = newValue;
-        this.type = type;
+    public Node(final String keyParam, final Object oldValueParam, final Object newValueParam, final String typeParam) {
+        this.key = keyParam;
+        this.oldValue = oldValueParam;
+        this.newValue = newValueParam;
+        this.type = typeParam;
     }
 
     /**

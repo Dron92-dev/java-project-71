@@ -15,9 +15,12 @@ import org.junit.jupiter.api.Test;
 final class DifferTest {
 
     /**
-     * Ожидаемая стилизация результата работы диффа.
+     * Ожидаемая стилизация результата работы диффа в формате stylish.
      */
     private String expectedNestedStylish;
+    /**
+     * Ожидаемая стилизация результата работы диффа в формате plain.
+     */
     private String expectedPlain;
 
     /**
@@ -137,7 +140,7 @@ final class DifferTest {
      * @param resourceName имя ресурса (файла)
      * @return путь к ресурсу
      */
-    private String getResourcePath(String resourceName) {
+    private String getResourcePath(final String resourceName) {
         try {
             URL recourseUrl = getClass().getClassLoader().getResource(resourceName);
             if (recourseUrl == null) {

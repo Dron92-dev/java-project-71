@@ -1,7 +1,11 @@
 package hexlet.code;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Утилитарный класс для сравнения двух карт (Map) и генерации различий.
@@ -35,7 +39,8 @@ public final class Differ {
      * @return строковое представление изменений
      * @throws Exception если чтение или парсинг звершились ошибкой
      */
-    public static String generate(final String filePath1, final String filePath2, final String format) throws Exception {
+    public static String generate(final String filePath1, final String filePath2, final String format)
+            throws Exception {
         Map<String, Object> data1 = Parser.parse(filePath1);
         Map<String, Object> data2 = Parser.parse(filePath2);
 
@@ -82,7 +87,7 @@ public final class Differ {
      * @param value2 второе значение
      * @return true если значения равны
      */
-    private static boolean isEqual(Object value1, Object value2) {
+    private static boolean isEqual(final Object value1, final Object value2) {
         if (value1 == null && value2 == null) {
             return true;
         } else if (value1 == null || value2 == null) {

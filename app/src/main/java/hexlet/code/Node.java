@@ -3,10 +3,22 @@ package hexlet.code;
 /**
  * Представляет узел в дереве различий.
  */
-public class Node {
+public final class Node {
+    /**
+     * Ключ узла.
+     */
     private final String key;
+    /**
+     * Старое значение узла.
+     */
     private final Object oldValue;
+    /**
+     * Новое значение узла.
+     */
     private final Object newValue;
+    /**
+     * Тип изменения.
+     */
     private final String type;
 
     /**
@@ -24,18 +36,38 @@ public class Node {
         this.type = type;
     }
 
+    /**
+     * Получает ключ узла.
+     *
+     * @return ключ
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Получает старое значение узла.
+     *
+     * @return старое значение
+     */
     public Object getOldValue() {
         return oldValue;
     }
 
+    /**
+     * Получает новое значение узла.
+     *
+     * @return новое значение
+     */
     public Object getNewValue() {
         return newValue;
     }
 
+    /**
+     * Получает тип изменения узла.
+     *
+     * @return тип изменения
+     */
     public String getType() {
         return type;
     }

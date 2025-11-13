@@ -7,9 +7,17 @@ import java.util.List;
 /**
  * Утилитарный класс для вывода в формате plain.
  */
-public class PlainFormatter {
+public final class PlainFormatter {
+
+    /**
+     * Конструктор.
+     */
+    private PlainFormatter() {
+    }
+
     /**
      * Форматирует различия в формате plain.
+     *
      * @param diff список узлов представляющих различия
      * @return отформатированная строка
      */
@@ -22,16 +30,26 @@ public class PlainFormatter {
 
             switch (type) {
                 case "added":
-                    result.append("Property '").append(key).append("' was added with value: ")
-                            .append(formatePlainValue(node.getNewValue())).append("\n");
+                    result.append("Property '")
+                            .append(key)
+                            .append("' was added with value: ")
+                            .append(formatePlainValue(node.getNewValue()))
+                            .append("\n");
                     break;
                 case "removed":
-                    result.append("Property '").append(key).append("' was removed").append("\n");
+                    result.append("Property '")
+                            .append(key)
+                            .append("' was removed")
+                            .append("\n");
                     break;
                 case "changed":
-                    result.append("Property '").append(key).append("' was updated. From ")
+                    result.append("Property '")
+                            .append(key)
+                            .append("' was updated. From ")
                             .append(formatePlainValue(node.getOldValue()))
-                            .append(" to ").append(formatePlainValue(node.getNewValue())).append("\n");
+                            .append(" to ")
+                            .append(formatePlainValue(node.getNewValue()))
+                            .append("\n");
                     break;
                 case "unchanged":
                     // Не выводим неизмененные свойства в plain формате
@@ -44,11 +62,12 @@ public class PlainFormatter {
             result.setLength(result.length() - 1);
         }
 
-        return  result.toString();
+        return result.toString();
     }
 
     /**
      * Форматирует значение для вывода в строковый plain формат.
+     *
      * @param value значение
      * @return строковый вывод значения
      */
@@ -73,10 +92,11 @@ public class PlainFormatter {
 
     /**
      * Проверяет является ли значение сложным (массив или Map).
+     *
      * @param value значение
      * @return true или false
      */
-    private  static boolean isComplexValue(Object value) {
+    private static boolean isComplexValue(Object value) {
         return value instanceof java.util.List || value instanceof java.util.Map;
     }
 }

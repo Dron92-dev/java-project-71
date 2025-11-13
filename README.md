@@ -25,4 +25,8 @@
 
 [![asciicast](https://asciinema.org/a/yTqMWad91yjrX88vEgXqEYAiB.svg)](https://asciinema.org/a/yTqMWad91yjrX88vEgXqEYAiB)
 
+## Пример работы с форматом "plain"
+
+[![asciicast](https://asciinema.org/a/eYFNoM1kZcTCKT2PcBAD00LqF.svg)](https://asciinema.org/a/eYFNoM1kZcTCKT2PcBAD00LqF)
+
 

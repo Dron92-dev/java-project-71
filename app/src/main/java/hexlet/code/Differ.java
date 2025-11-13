@@ -22,11 +22,24 @@ public final class Differ {
      * @throws Exception если чтение или парсинг звершились ошибкой
      */
     public static String generate(final String filePath1, final String filePath2) throws Exception {
+        return generate(filePath1, filePath2, "stylish");
+    }
+
+    /**
+     * Генерирует разницу между двумя файлами.
+     *
+     * @param filePath1 путь к первому файлу
+     * @param filePath2 путь ко второму файлу
+     * @param format желаемый формат вывода
+     * @return строковое представление изменений
+     * @throws Exception если чтение или парсинг звершились ошибкой
+     */
+    public static String generate(final String filePath1, final String filePath2, String format) throws Exception {
         Map<String, Object> data1 = Parser.parse(filePath1);
         Map<String, Object> data2 = Parser.parse(filePath2);
 
         List<Node> diff = buildDiff(data1, data2);
-        return Formatter.stylish(diff);
+        return Formatter.format(diff, format);
     }
 
     /**

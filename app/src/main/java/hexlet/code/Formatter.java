@@ -1,9 +1,12 @@
 package hexlet.code;
 
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
+
 import java.util.List;
 
 /**
- * Утилитарный класс для форматирования различий.
+ * Главный класс форматтера для выбора подходящего формата вывода.
  */
 public class Formatter {
 
@@ -13,40 +16,17 @@ public class Formatter {
     private Formatter() {
     }
 
-    public static String stylish(List<Node> diff) {
-        StringBuilder result = new StringBuilder();
-        result.append("{\n");
-
-        for (Node node : diff) {
-            String key = node.getKey();
-            String type = node.getType();
-
-            switch (type) {
-                case "added":
-                    result.append("  + ").append(key).append(": ").append(formateValue(node.getNewValue())).append("\n");
-                    break;
-                case "removed":
-                    result.append("  - ").append(key).append(": ").append(formateValue(node.getOldValue())).append("\n");
-                    break;
-                case "changed":
-                    result.append("  - ").append(key).append(": ").append(formateValue(node.getOldValue())).append("\n");
-                    result.append("  + ").append(key).append(": ").append(formateValue(node.getNewValue())).append("\n");
-                    break;
-                case "unchanged":
-                    result.append("    ").append(key).append(": ").append(formateValue(node.getOldValue())).append("\n");
-                    break;
-                default:
-                    throw new IllegalArgumentException("Неизвестный тип узла: " + type);
-            }
-        }
-        result.append("}");
-        return  result.toString();
-    }
-
-    private static String formateValue(Object value) {
-        if (value == null) {
-            return null;
-        }
-        return value.toString();
+    /**
+     * Форматирует различия в указанном формате.
+     * @param diff список представляющий различия
+     * @param format формат желаемого вывода (stylish, plain)
+     * @return вывод результата отформатированный в String
+     */
+    public static String format(List<Node> diff, String format) {
+        return switch (format) {
+            case "stylish" -> StylishFormatter.format(diff);
+            case "plain" -> PlainFormatter.format(diff);
+            default -> throw new IllegalArgumentException("Неподдерживаемый формат: " + format);
+        };
     }
 }

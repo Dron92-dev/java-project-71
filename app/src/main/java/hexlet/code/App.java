@@ -30,7 +30,7 @@ public class App implements Callable<Integer> {
     /** Формат вывода результатов. */
     @Option(
             names = {"-f", "--format"},
-            description = "output format [default: stylish]",
+            description = "output format [default: format]",
             paramLabel = "format",
             defaultValue = "stylish")
     private String format;
@@ -66,7 +66,7 @@ public class App implements Callable<Integer> {
      * @throws Exception в случае ошибок чтения файлов или парсинга
      */
     public Integer call() throws Exception {
-        String diff = Differ.generate(filePath1, filePath2);
+        String diff = Differ.generate(filePath1, filePath2, format);
         System.out.println(diff);
         return 0;
     }

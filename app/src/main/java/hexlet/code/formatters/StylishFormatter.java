@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Утилитарный класс для вывода в формате stylish.
  */
-public class StylishFormatter {
+public final class StylishFormatter {
     /**
      * Конструктор.
      */

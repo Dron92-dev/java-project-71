@@ -27,9 +27,10 @@ public final class Node {
      * @param keyParam      ключ
      * @param oldValueParam старое значение
      * @param newValueParam новое значение
-     * @param type     тип изменения
+     * @param typeParam     тип изменения
      */
-    public Node(final String keyParam, final Object oldValueParam, final Object newValueParam, final String typeParam) {
+    public Node(final String keyParam, final Object oldValueParam, final Object newValueParam,
+                final String typeParam) {
         this.key = keyParam;
         this.oldValue = oldValueParam;
         this.newValue = newValueParam;

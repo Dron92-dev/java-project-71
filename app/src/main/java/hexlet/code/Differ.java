@@ -35,12 +35,12 @@ public final class Differ {
      *
      * @param filePath1 путь к первому файлу
      * @param filePath2 путь ко второму файлу
-     * @param format желаемый формат вывода
+     * @param format    желаемый формат вывода
      * @return строковое представление изменений
      * @throws Exception если чтение или парсинг звершились ошибкой
      */
-    public static String generate(final String filePath1, final String filePath2, final String format)
-            throws Exception {
+    public static String generate(final String filePath1, final String filePath2,
+                                  final String format) throws Exception {
         Map<String, Object> data1 = Parser.parse(filePath1);
         Map<String, Object> data2 = Parser.parse(filePath2);
 

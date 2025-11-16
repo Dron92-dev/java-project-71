@@ -10,6 +10,9 @@ import java.util.List;
  */
 public final class JsonFormatter {
 
+    /**
+     * ObjectMapper для сереализации в JSON.
+     */
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**

@@ -17,11 +17,16 @@ final class DifferTest {
     /**
      * Ожидаемая стилизация результата работы диффа в формате stylish.
      */
-    private String expectedNestedStylish;
+    private String expectedStylish;
     /**
      * Ожидаемая стилизация результата работы диффа в формате plain.
      */
     private String expectedPlain;
+
+    /**
+     * Ожидаемая стилизация результата работы диффа в формате json.
+     */
+    private String expectedJson;
 
     /**
      * Подготовка данных перед каждым тестом.
@@ -29,7 +34,7 @@ final class DifferTest {
      */
     @BeforeEach
     void setUp() {
-        expectedNestedStylish = String.join("\n",
+        expectedStylish = String.join("\n",
                 "{",
                 "    chars1: [a, b, c]",
                 "  - chars2: [d, e, f]",
@@ -72,21 +77,109 @@ final class DifferTest {
                 "Property 'setting2' was updated. From 200 to 300",
                 "Property 'setting3' was updated. From true to 'none'"
         );
+
+        expectedJson = String.join("\n",
+                "[",
+                "  {",
+                "    \"key\": \"chars1\",",
+                "    \"type\": \"unchanged\",",
+                "    \"value\": [\"a\",\"b\",\"c\"]",
+                "  },",
+                "  {",
+                "    \"key\": \"chars2\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": [\"d\",\"e\",\"f\"],",
+                "    \"newValue\": false",
+                "  },",
+                "  {",
+                "    \"key\": \"checked\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": false,",
+                "    \"newValue\": true",
+                "  },",
+                "  {",
+                "    \"key\": \"default\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": null,",
+                "    \"newValue\": [\"value1\",\"value2\"]",
+                "  },",
+                "  {",
+                "    \"key\": \"id\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": 45,",
+                "    \"newValue\": null",
+                "  },",
+                "  {",
+                "    \"key\": \"key1\",",
+                "    \"type\": \"removed\",",
+                "    \"value\": \"value1\"",
+                "  },",
+                "  {",
+                "    \"key\": \"key2\",",
+                "    \"type\": \"added\",",
+                "    \"value\": \"value2\"",
+                "  },",
+                "  {",
+                "    \"key\": \"numbers1\",",
+                "    \"type\": \"unchanged\",",
+                "    \"value\": [1,2,3,4]",
+                "  },",
+                "  {",
+                "    \"key\": \"numbers2\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": [2,3,4,5],",
+                "    \"newValue\": [22,33,44,55]",
+                "  },",
+                "  {",
+                "    \"key\": \"numbers3\",",
+                "    \"type\": \"removed\",",
+                "    \"value\": [3,4,5]",
+                "  },",
+                "  {",
+                "    \"key\": \"numbers4\",",
+                "    \"type\": \"added\",",
+                "    \"value\": [4,5,6]",
+                "  },",
+                "  {",
+                "    \"key\": \"obj1\",",
+                "    \"type\": \"added\",",
+                "    \"value\": {\"nestedKey\":\"value\",\"isNested\":true}",
+                "  },",
+                "  {",
+                "    \"key\": \"setting1\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": \"Some value\",",
+                "    \"newValue\": \"Another value\"",
+                "  },",
+                "  {",
+                "    \"key\": \"setting2\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": 200,",
+                "    \"newValue\": 300",
+                "  },",
+                "  {",
+                "    \"key\": \"setting3\",",
+                "    \"type\": \"changed\",",
+                "    \"oldValue\": true,",
+                "    \"newValue\": \"none\"",
+                "  }",
+                "]"
+        );
     }
 
     /**
-     * Тест для сравнения вложенных JSON структур.
+     * Тест для сравнения вложенных JSON структур в формате stylish.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithNestedJsonFiles() throws Exception {
+    void testGenerateWithStylishFormatForJsonFiles() throws Exception {
         String filePath1 = getResourcePath("fixtures/nested1.json");
         String filePath2 = getResourcePath("fixtures/nested2.json");
 
         String result = Differ.generate(filePath1, filePath2, "stylish");
 
-        assertThat(result).isEqualTo(expectedNestedStylish);
+        assertThat(result).isEqualTo(expectedStylish);
     }
 
     /**
@@ -95,7 +188,7 @@ final class DifferTest {
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithPlainFormatJson() throws Exception {
+    void testGenerateWithPlainFormatForJsonFiles() throws Exception {
         String filePath1 = getResourcePath("fixtures/nested1.json");
         String filePath2 = getResourcePath("fixtures/nested2.json");
 
@@ -105,18 +198,33 @@ final class DifferTest {
     }
 
     /**
+     * Тест для сравнения вложенных JSON структур в формате json.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithJsonFormatForJsonFiles() throws Exception {
+        String filePath1 = getResourcePath("fixtures/nested1.json");
+        String filePath2 = getResourcePath("fixtures/nested2.json");
+
+        String result = Differ.generate(filePath1, filePath2, "json");
+
+        assertThat(result).isEqualTo(expectedJson);
+    }
+
+    /**
      * Тест для сравнения вложенных YAML структур.
      *
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithNestedYamlFiles() throws Exception {
+    void testGenerateWithStylishFormatForYamlFiles() throws Exception {
         String filePath1 = getResourcePath("fixtures/nested1.yml");
         String filePath2 = getResourcePath("fixtures/nested2.yml");
 
-        String result = Differ.generate(filePath1, filePath2);
+        String result = Differ.generate(filePath1, filePath2, "stylish");
 
-        assertThat(result).isEqualTo(expectedNestedStylish);
+        assertThat(result).isEqualTo(expectedStylish);
     }
 
     /**
@@ -125,13 +233,28 @@ final class DifferTest {
      * @throws Exception если тест не удался
      */
     @Test
-    void testGenerateWithPlainFormatYaml() throws Exception {
+    void testGenerateWithPlainFormatForYamlFiles() throws Exception {
         String filePath1 = getResourcePath("fixtures/nested1.yml");
         String filePath2 = getResourcePath("fixtures/nested2.yml");
 
         String result = Differ.generate(filePath1, filePath2, "plain");
 
         assertThat(result).isEqualTo(expectedPlain);
+    }
+
+    /**
+     * Тест для сравнения вложенных YAML структур в формате json.
+     *
+     * @throws Exception если тест не удался
+     */
+    @Test
+    void testGenerateWithJsonFormatForYamlFiles() throws Exception {
+        String filePath1 = getResourcePath("fixtures/nested1.yml");
+        String filePath2 = getResourcePath("fixtures/nested2.yml");
+
+        String result = Differ.generate(filePath1, filePath2, "json");
+
+        assertThat(result).isEqualTo(expectedJson);
     }
 
     /**

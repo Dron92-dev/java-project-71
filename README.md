@@ -29,7 +29,7 @@
 
 [![asciicast](https://asciinema.org/a/eYFNoM1kZcTCKT2PcBAD00LqF.svg)](https://asciinema.org/a/eYFNoM1kZcTCKT2PcBAD00LqF)
 
-## Пример работы с форматом "plain"
+## Пример работы с форматом "json"
 
 [![asciicast](https://asciinema.org/a/ujuhdPtd2mWdVU9FuzZTGWJOf.svg)](https://asciinema.org/a/ujuhdPtd2mWdVU9FuzZTGWJOf)
 
